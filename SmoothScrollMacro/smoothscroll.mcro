@@ -1,0 +1,307 @@
+// SMOOTHSCROLL.MCRO by in1tiate
+// Based on CSCROLL.MCRO by Payne Gaming / armystuntman on the AACD Discord
+
+// === How to Use ===
+// Setup:
+// set _sscroll_courtroom aj <--- Like this!
+// init_sscroll <--- Make sure to reinitialize the macro when you change courtrooms!
+// Usage:
+// sscroll type=def2wit def=phoenix wit=larry d-e=sweat w-e=normal
+// sscroll type=pro2def pro=edgeworth def=phoenix p-e=shrug d-e=sheepish
+
+// === Side Macro ===
+// Setup: same as sscroll
+// Usage:
+// side <def/wit/jud/hlp/pro> <character> <emotion>
+
+macro init_sscroll
+# Set up variables again in case this is called before sscroll is
+joinvar sscroll_cr $_sscroll_courtroom /
+joinvar sscroll_prefix scroll/ $sscroll_cr
+joinvar sscroll_bg $sscroll_prefix $_sscroll_type
+
+# Set up paths to sides
+joinvar sscroll_defbg $sscroll_prefix defense
+joinvar sscroll_deffg $sscroll_prefix dbench
+joinvar sscroll_witbg $sscroll_prefix witness
+joinvar sscroll_witfg $sscroll_prefix wbench
+joinvar sscroll_probg $sscroll_prefix prosecution
+joinvar sscroll_profg $sscroll_prefix pbench
+joinvar sscroll_judbg $sscroll_prefix judge
+joinvar sscroll_hlpbg $sscroll_prefix helper
+
+# Timing variables
+# Don't touch these unless
+# you know what you're doing
+set sscroll_speed_wshort 12
+set sscroll_speed_wlong 17
+set sscroll_speed_short 17
+set sscroll_speed_long 24
+endmacro
+
+macro sscroll
+#INIT VARIABLES (PyWright limitation)
+set _sscroll_type $type
+set _sscroll_defense $def
+set _sscroll_prosecutor $pro
+set _sscroll_witness $wit
+set _sscroll_defense_nt $d-nt
+set _sscroll_prosecutor_nt $p-nt
+set _sscroll_witness_nt $w-nt
+set sscroll_def_e $d-e
+set sscroll_wit_e $w-e
+set sscroll_pro_e $p-e
+
+#Defaults
+
+isnotempty _sscroll_defense?
+set sscroll_def $_sscroll_defense
+isnotempty _sscroll_witness?
+set sscroll_wit $_sscroll_witness
+isnotempty _sscroll_prosecutor?
+set sscroll_pro $_sscroll_prosecutor
+
+isnotempty _sscroll_defense_nt?
+set sscroll_def_nt $_sscroll_defense_nt
+isnotempty _sscroll_witness_nt?
+set sscroll_wit_nt $_sscroll_witness_nt
+isnotempty _sscroll_prosecutor_nt?
+set sscroll_pro_nt $_sscroll_prosecutor_nt
+
+#Default Emotes
+isempty sscroll_def_e?
+set sscroll_def_e normal
+isempty sscroll_wit_e?
+set sscroll_wit_e normal
+isempty sscroll_pro_e?
+set sscroll_pro_e normal
+
+isempty sscroll_def_nt?
+set sscroll_def_nt $sscroll_def
+isempty sscroll_wit_nt?
+set sscroll_wit_nt $sscroll_wit
+isempty sscroll_pro_nt?
+set sscroll_pro_nt $sscroll_pro
+
+joinvar sscroll_cr $_sscroll_courtroom /
+joinvar sscroll_prefix scroll/ $sscroll_cr
+
+joinvar sscroll_bg $sscroll_prefix $_sscroll_type
+
+
+#set up static bg/fg pairs
+joinvar sscroll_defbg $sscroll_prefix defense
+joinvar sscroll_deffg $sscroll_prefix dbench
+joinvar sscroll_witbg $sscroll_prefix witness
+joinvar sscroll_witfg $sscroll_prefix wbench
+joinvar sscroll_probg $sscroll_prefix prosecution
+joinvar sscroll_profg $sscroll_prefix pbench
+
+goto $_sscroll_type fail=exit
+
+label def2pro
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_def e=$sscroll_def_e name=dc x=0 stack noauto
+char $sscroll_pro e=$sscroll_pro_e name=pc x=780 stack noauto
+
+#Tables
+fg $sscroll_profg x=780 name=pb
+joinvar sscroll_temp fg/ $sscroll_deffg
+obj $sscroll_temp x=0 name=db
+
+#Scrolling
+scroll name=dc x=-640 speed=$sscroll_speed_short nowait
+scroll name=db x=-640 speed=$sscroll_speed_short nowait
+scroll name=pc x=-780 speed=$sscroll_speed_long nowait
+scroll name=pb x=-780 speed=$sscroll_speed_long nowait
+
+#Cleanup
+pause 28
+delete name=db
+bg $sscroll_probg
+fg $sscroll_profg
+char $sscroll_pro e=$sscroll_pro_e nametag=$sscroll_pro_nt
+goto exit
+
+label pro2def
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_def e=$sscroll_def_e name=dc x=-780 stack noauto
+char $sscroll_pro e=$sscroll_pro_e name=pc x=0 stack noauto
+
+#Tables
+fg $sscroll_profg x=0 name=pb
+joinvar sscroll_temp fg/ $sscroll_deffg
+obj $sscroll_temp x=-780 name=db
+
+#Scrolling
+scroll name=dc x=780 speed=$sscroll_speed_long nowait
+scroll name=db x=780 speed=$sscroll_speed_long nowait
+scroll name=pc x=640 speed=$sscroll_speed_short nowait
+scroll name=pb x=640 speed=$sscroll_speed_short nowait
+
+#Cleanup
+pause 28
+delete name=db
+bg $sscroll_defbg
+fg $sscroll_deffg
+char $sscroll_def e=$sscroll_def_e nametag=$sscroll_def_nt
+goto exit
+
+label def2wit
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_def e=$sscroll_def_e name=dc x=0 stack noauto
+char $sscroll_wit e=$sscroll_wit_e name=wc x=540 stack noauto
+
+#Tables
+fg $sscroll_witfg x=540 name=wb
+joinvar sscroll_temp fg/ $sscroll_deffg
+obj $sscroll_temp x=0 name=db
+
+#Scrolling
+scroll name=dc x=-280 speed=$sscroll_speed_wshort nowait
+scroll name=db x=-280 speed=$sscroll_speed_wshort nowait
+scroll name=wc x=-540 speed=$sscroll_speed_wlong nowait
+scroll name=wb x=-540 speed=$sscroll_speed_wlong nowait
+
+#Cleanup
+pause 28
+delete name=db
+bg $sscroll_witbg
+fg $sscroll_witfg
+char $sscroll_wit e=$sscroll_wit_e nametag=$sscroll_wit_nt
+goto exit
+
+label pro2wit
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_pro e=$sscroll_pro_e name=pc x=0 stack noauto
+char $sscroll_wit e=$sscroll_wit_e name=wc x=-540 stack noauto
+
+#Tables
+fg $sscroll_witfg x=-540 name=wb
+joinvar sscroll_temp fg/ $sscroll_profg
+obj $sscroll_temp x=0 name=pb
+
+#Scrolling
+scroll name=pc x=280 speed=$sscroll_speed_wshort nowait
+scroll name=pb x=280 speed=$sscroll_speed_wshort nowait
+scroll name=wc x=540 speed=$sscroll_speed_wlong nowait
+scroll name=wb x=540 speed=$sscroll_speed_wlong nowait
+
+#Cleanup
+pause 28
+delete name=pb
+bg $sscroll_witbg
+fg $sscroll_witfg
+char $sscroll_wit e=$sscroll_wit_e nametag=$sscroll_wit_nt
+goto exit
+
+label wit2def
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_def e=$sscroll_def_e name=dc x=-540 stack noauto
+char $sscroll_wit e=$sscroll_wit_e name=wc x=0 stack noauto
+
+#Tables
+fg $sscroll_deffg x=-540 name=db
+joinvar sscroll_temp fg/ $sscroll_witfg
+obj $sscroll_temp x=0 name=wb
+
+#Scrolling
+scroll name=wc x=280 speed=$sscroll_speed_wshort nowait
+scroll name=wb x=280 speed=$sscroll_speed_wshort nowait
+scroll name=dc x=540 speed=$sscroll_speed_wlong nowait
+scroll name=db x=540 speed=$sscroll_speed_wlong nowait
+
+#Cleanup
+pause 28
+delete name=wb
+bg $sscroll_defbg
+fg $sscroll_deffg
+char $sscroll_def e=$sscroll_def_e nametag=$sscroll_def_nt
+goto exit
+
+label wit2pro
+pause 10
+#Background
+bg $sscroll_bg
+
+#Characters
+char $sscroll_pro e=$sscroll_pro_e name=pc x=540 stack noauto
+char $sscroll_wit e=$sscroll_wit_e name=wc x=0 stack noauto
+
+#Tables
+fg $sscroll_profg x=540 name=pb
+joinvar sscroll_temp fg/ $sscroll_witfg
+obj $sscroll_temp x=0 name=wb
+
+#Scrolling
+scroll name=wc x=-280 speed=$sscroll_speed_wshort nowait
+scroll name=wb x=-280 speed=$sscroll_speed_wshort nowait
+scroll name=pc x=-540 speed=$sscroll_speed_wlong nowait
+scroll name=pb x=-540 speed=$sscroll_speed_wlong nowait
+
+#Cleanup
+pause 28
+delete name=wb
+bg $sscroll_probg
+fg $sscroll_profg
+char $sscroll_pro e=$sscroll_pro_e nametag=$sscroll_pro_nt
+goto exit
+
+
+label exit
+pause 10
+endmacro
+
+macro side
+goto $1
+
+label def
+bg $sscroll_defbg
+fg $sscroll_deffg
+char $2 e=$3
+goto side_end
+
+label pro
+bg $sscroll_probg
+fg $sscroll_profg
+char $2 e=$3
+goto side_end
+
+label wit
+bg $sscroll_witbg
+fg $sscroll_witfg
+char $2 e=$3
+goto side_end
+
+label jud
+bg $sscroll_judbg
+char $2 e=$3
+goto side_end
+
+label hlp
+bg $sscroll_hlpbg
+char $2 e=$3
+goto side_end
+
+label side_end
+endmacro

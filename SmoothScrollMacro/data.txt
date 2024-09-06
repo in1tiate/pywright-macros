@@ -1,0 +1,4 @@
+title Smooth Scroll Macro Demo
+version 0.0.1
+author in1tiate
+icon art/general/banner.png

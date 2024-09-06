@@ -1,0 +1,46 @@
+set _sscroll_courtroom aj
+init_sscroll
+
+side def phoenix document
+"So, I was looking through the code for this macro..."
+"{e thinking}Is it true that we can change courtrooms on-the-fly?"
+sscroll type=def2pro def=phoenix d-e=thinking pro=payne p-e=confident
+side pro payne confident
+"Hee{p10} hee{p10} hee{p10}...{p20} That's right.{p20}"
+set _sscroll_courtroom aa
+init_sscroll
+"You could even do it {spd1.5}{side pro payne normal}{s 10 10 nowait}in the middle of a text box!"
+sscroll type=pro2def def=phoenix d-e=sweating pro=payne p-e=normal
+side def phoenix sweating
+"...{p20}Why would anyone want that?"
+sscroll type=def2pro def=phoenix d-e=sweating pro=payne p-e=sweating
+side pro payne sweating
+"...{p20}{f}I'm not really certain."
+side jud judge normal
+"I for one approve of this newfangled system."
+side hlp maya bench-hum
+"He's pretty hip for an old-timer..."
+"{e bench}You should be taking notes, Nick!"
+char phoenix hide
+"I'll remember that next time you complain about the Steel Samurai reboot series."
+char maya e=bench-strict
+"{s 10 10 nowait}Hey,{p10} no fair! You know as well as I do that it's just a soulless cash grab!"
+side wit larry normal
+"I'm also here, dude."
+sscroll type=wit2def def=phoenix d-e=normal wit=larry w-e=normal
+side def phoenix normal
+"Larry...?{p20} When did you get here?"
+sscroll type=def2wit def=phoenix d-e=normal wit=larry w-e=thinking
+side wit larry thinking
+"About two text boxes ago, I think..."
+"{e thumbs up}Nah, it's closer to three now."
+sscroll type=wit2pro wit=larry pro=payne w-e=normal p-e=normal
+side pro payne normal
+"The witness will refrain from {s 10 10 nowait}breaking the fourth wall!"
+sscroll type=pro2wit pro=payne wit=larry p-e=normal w-e=normal
+side wit larry normal
+"But you just did that a minute ago."
+"{e thinking}Oh, hey, we used all the features."
+side hlp maya bench-hum
+"I guess that means the demo's over."
+"{e bench}Byeonara!"

@@ -1,0 +1,6 @@
+#Defaults
+init_defaults
+init_court_record_settings
+set _textbox_allow_skip true
+
+script scene0
