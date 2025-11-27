@@ -48,7 +48,6 @@ set sscroll_speed_long 24
 endmacro
 
 macro sscroll
-{msgwindow_hide}
 #INIT VARIABLES (PyWright limitation)
 set _sscroll_type $type
 set _sscroll_defense $def
@@ -83,7 +82,7 @@ set sscroll_def_e normal
 isempty sscroll_wit_e?
 set sscroll_wit_e normal
 isempty sscroll_pro_e?
-set sscroll_pro_e norma
+set sscroll_pro_e normal
 
 isempty sscroll_def_nt?
 set sscroll_def_nt $sscroll_def
@@ -331,15 +330,4 @@ char $2 e=$3
 goto side_end$0
 
 label side_end$0
-flag msgwindow?
-goto handle_window$0
-goto skip_window$0
-
-// Re-display the message window if we need to
-label handle_window$0
-isnotempty _var_nt?
-{nti $_var_nt}
-isempty _var_nt?
-{nti_clear}
-label skip_window$0
 endmacro
