@@ -1,5 +1,7 @@
-// SMOOTHSCROLL.MCRO by in1tiate
-// Based on CSCROLL.MCRO by Payne Gaming / armystuntman on the AACD Discord
+### SMOOTHSCROLL.MCRO ###
+### Smooth courtroom scrolling functions ###
+### By in1tiate ###
+### Based on CSCROLL.MCRO by Armystuntman AKA Jupiter ###
 
 // === How to Use ===
 // Setup:
@@ -8,6 +10,12 @@
 // Usage:
 // sscroll type=def2wit def=phoenix wit=larry d-e=sweat w-e=normal
 // sscroll type=pro2def pro=edgeworth def=phoenix p-e=shrug d-e=sheepish
+
+// Caveats:
+// - Try not to use animations which have less than 30 frames of delay on their first frame.
+//   If you need to, I advise creating static versions of them to use in slides.
+// - You cannot slide without two characters. You can fake this by creating a character called "none"
+//   and setting its animation to a blank image called "none". The engine just needs something to load.
 
 // === Side Macro ===
 // Setup: same as sscroll
@@ -40,6 +48,7 @@ set sscroll_speed_long 24
 endmacro
 
 macro sscroll
+{msgwindow_hide}
 #INIT VARIABLES (PyWright limitation)
 set _sscroll_type $type
 set _sscroll_defense $def
@@ -74,7 +83,7 @@ set sscroll_def_e normal
 isempty sscroll_wit_e?
 set sscroll_wit_e normal
 isempty sscroll_pro_e?
-set sscroll_pro_e normal
+set sscroll_pro_e norma
 
 isempty sscroll_def_nt?
 set sscroll_def_nt $sscroll_def
@@ -83,8 +92,7 @@ set sscroll_wit_nt $sscroll_wit
 isempty sscroll_pro_nt?
 set sscroll_pro_nt $sscroll_pro
 
-joinvar sscroll_cr $_sscroll_courtroom /
-joinvar sscroll_prefix scroll/ $sscroll_cr
+joinvar sscroll_prefix scroll/ $_sscroll_courtroom /
 
 joinvar sscroll_bg $sscroll_prefix $_sscroll_type
 
@@ -101,8 +109,7 @@ goto $_sscroll_type fail=exit
 
 label def2pro
 pause 10
-#Background
-bg $sscroll_bg
+bg $sscroll_defbg
 
 #Characters
 char $sscroll_def e=$sscroll_def_e name=dc x=0 stack noauto
@@ -119,8 +126,11 @@ scroll name=db x=-640 speed=$sscroll_speed_short nowait
 scroll name=pc x=-780 speed=$sscroll_speed_long nowait
 scroll name=pb x=-780 speed=$sscroll_speed_long nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=db
 bg $sscroll_probg
 fg $sscroll_profg
@@ -130,7 +140,7 @@ goto exit
 label pro2def
 pause 10
 #Background
-bg $sscroll_bg
+bg $sscroll_probg
 
 #Characters
 char $sscroll_def e=$sscroll_def_e name=dc x=-780 stack noauto
@@ -147,8 +157,11 @@ scroll name=db x=780 speed=$sscroll_speed_long nowait
 scroll name=pc x=640 speed=$sscroll_speed_short nowait
 scroll name=pb x=640 speed=$sscroll_speed_short nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=db
 bg $sscroll_defbg
 fg $sscroll_deffg
@@ -158,7 +171,7 @@ goto exit
 label def2wit
 pause 10
 #Background
-bg $sscroll_bg
+bg $sscroll_defbg
 
 #Characters
 char $sscroll_def e=$sscroll_def_e name=dc x=0 stack noauto
@@ -175,8 +188,11 @@ scroll name=db x=-280 speed=$sscroll_speed_wshort nowait
 scroll name=wc x=-540 speed=$sscroll_speed_wlong nowait
 scroll name=wb x=-540 speed=$sscroll_speed_wlong nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=db
 bg $sscroll_witbg
 fg $sscroll_witfg
@@ -186,7 +202,7 @@ goto exit
 label pro2wit
 pause 10
 #Background
-bg $sscroll_bg
+bg $sscroll_probg
 
 #Characters
 char $sscroll_pro e=$sscroll_pro_e name=pc x=0 stack noauto
@@ -203,8 +219,11 @@ scroll name=pb x=280 speed=$sscroll_speed_wshort nowait
 scroll name=wc x=540 speed=$sscroll_speed_wlong nowait
 scroll name=wb x=540 speed=$sscroll_speed_wlong nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=pb
 bg $sscroll_witbg
 fg $sscroll_witfg
@@ -214,7 +233,7 @@ goto exit
 label wit2def
 pause 10
 #Background
-bg $sscroll_bg
+bg $sscroll_witbg
 
 #Characters
 char $sscroll_def e=$sscroll_def_e name=dc x=-540 stack noauto
@@ -231,8 +250,11 @@ scroll name=wb x=280 speed=$sscroll_speed_wshort nowait
 scroll name=dc x=540 speed=$sscroll_speed_wlong nowait
 scroll name=db x=540 speed=$sscroll_speed_wlong nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=wb
 bg $sscroll_defbg
 fg $sscroll_deffg
@@ -242,7 +264,7 @@ goto exit
 label wit2pro
 pause 10
 #Background
-bg $sscroll_bg
+bg $sscroll_witbg
 
 #Characters
 char $sscroll_pro e=$sscroll_pro_e name=pc x=540 stack noauto
@@ -259,49 +281,65 @@ scroll name=wb x=-280 speed=$sscroll_speed_wshort nowait
 scroll name=pc x=-540 speed=$sscroll_speed_wlong nowait
 scroll name=pb x=-540 speed=$sscroll_speed_wlong nowait
 
+#Background
+bg $sscroll_bg stack
+
 #Cleanup
-pause 28
+pause 30
 delete name=wb
 bg $sscroll_probg
 fg $sscroll_profg
 char $sscroll_pro e=$sscroll_pro_e nametag=$sscroll_pro_nt
 goto exit
 
-
 label exit
 pause 10
+label none
 endmacro
 
+### SIDE MACRO
 macro side
-goto $1
+joinvar sidelabel $1 $0
+goto $sidelabel
 
-label def
+label def$0
 bg $sscroll_defbg
 fg $sscroll_deffg
 char $2 e=$3
-goto side_end
+goto side_end$0
 
-label pro
+label pro$0
 bg $sscroll_probg
 fg $sscroll_profg
 char $2 e=$3
-goto side_end
+goto side_end$0
 
-label wit
+label wit$0
 bg $sscroll_witbg
 fg $sscroll_witfg
 char $2 e=$3
-goto side_end
+goto side_end$0
 
-label jud
+label jud$0
 bg $sscroll_judbg
 char $2 e=$3
-goto side_end
+goto side_end$0
 
-label hlp
+label hlp$0
 bg $sscroll_hlpbg
 char $2 e=$3
-goto side_end
+goto side_end$0
 
-label side_end
+label side_end$0
+flag msgwindow?
+goto handle_window$0
+goto skip_window$0
+
+// Re-display the message window if we need to
+label handle_window$0
+isnotempty _var_nt?
+{nti $_var_nt}
+isempty _var_nt?
+{nti_clear}
+label skip_window$0
 endmacro
